@@ -1,3 +1,4 @@
+import 'package:endgame/controllers/db_helper.dart';
 import 'package:flutter/material.dart';
 import 'package:endgame/static.dart' as Static;
 import 'package:flutter/services.dart';
@@ -50,7 +51,7 @@ class _AddTransactionState extends State<AddTransaction> {
       appBar: AppBar(
         toolbarHeight: 0.0,
       ),
-
+      backgroundColor: Color(0xffe2e7ef),
       body: ListView(
         padding: EdgeInsets.all(
             12.0,
@@ -76,6 +77,9 @@ class _AddTransactionState extends State<AddTransaction> {
                   borderRadius:
                   BorderRadius.circular(16.0),
                 ),
+                  padding: EdgeInsets.all(
+                    12.0,
+                  ),
                   child: Icon(
                     Icons.attach_money,
                   size: 24.0,
@@ -119,6 +123,9 @@ class _AddTransactionState extends State<AddTransaction> {
                     borderRadius:
                     BorderRadius.circular(16.0),
                   ),
+                  padding: EdgeInsets.all(
+                    12.0,
+                  ),
                   child: Icon(
                     Icons.description,
                     size: 24.0,
@@ -154,6 +161,9 @@ class _AddTransactionState extends State<AddTransaction> {
                     borderRadius:
                     BorderRadius.circular(16.0),
                   ),
+                  padding: EdgeInsets.all(
+                    12.0,
+                  ),
                   child: Icon(
                     Icons.moving_sharp,
                     size: 24.0,
@@ -163,42 +173,51 @@ class _AddTransactionState extends State<AddTransaction> {
                 width: 12.0,
               ),
               ChoiceChip(
-                  label: Text("Income",
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      color: type =="Income" ? Colors.white :Colors.black,
-                    ),
+                label: Text(
+                  "Income",
+                  style: TextStyle(
+                    fontSize: 18.0,
+                    color: type == "Income" ? Colors.white : Colors.black,
                   ),
-                  selectedColor: Static.PrimaryColor,
-                  selected: type =="Income" ? true: false,
-                  onSelected: (val){
-                    if(val){
-                      setState(() {
-                        type ="Income";
-                      });
-                    }
-                  },
+                ),
+                selectedColor: Static.PrimaryColor,
+                onSelected: (val) {
+                  if (val) {
+                    setState(() {
+                      type = "Income";
+                      if (note.isEmpty || note == "Expense") {
+                        note = 'Income';
+                      }
+                    });
+                  }
+                },
+                selected: type == "Income" ? true : false,
               ),
 
               SizedBox(
                 width: 12.0,
               ),
               ChoiceChip(
-                label: Text("Expense",
+                label: Text(
+                  "Expense",
                   style: TextStyle(
-                    fontSize: 16.0,
-                    color: type =="Expense" ? Colors.white :Colors.black,
+                    fontSize: 18.0,
+                    color: type == "Expense" ? Colors.white : Colors.black,
                   ),
                 ),
                 selectedColor: Static.PrimaryColor,
-                selected: type =="Expense" ? true: false,
-                onSelected: (val){
-                  if(val){
+                onSelected: (val) {
+                  if (val) {
                     setState(() {
-                      type ="Expense";
+                      type = "Expense";
+
+                      if (note.isEmpty || note == "Income") {
+                        note = 'Expense';
+                      }
                     });
                   }
                 },
+                selected: type == "Expense" ? true : false,
               ),
             ],
           ),
@@ -210,9 +229,12 @@ class _AddTransactionState extends State<AddTransaction> {
             child: TextButton(
                 onPressed: (){
                   _selectDate(context);
+
+                  FocusScope.of(context).unfocus();
                 },
                 style: ButtonStyle(
-                  padding: MaterialStateProperty.all(EdgeInsets.zero,),
+                  padding: MaterialStateProperty.all(
+                    EdgeInsets.zero,),
                 ),
                 child: Row(
                   children: [
@@ -247,11 +269,15 @@ class _AddTransactionState extends State<AddTransaction> {
           ),
           SizedBox(
             height: 50.0,
-            child: ElevatedButton(onPressed: (){
-              print(amount);
-              print(note);
-              print(type);
-              print(selectedDate);
+            child: ElevatedButton(
+              onPressed: () async {
+              if(amount != null && note.isNotEmpty ){
+                DbHelper dbHelper = DbHelper();
+                await dbHelper.addData(amount!, selectedDate, note, type);
+                Navigator.of(context).pop();
+              }else{
+                print("Not All Values Provided !");
+              }
             },
                 child: Text("Add",
                 style: TextStyle(

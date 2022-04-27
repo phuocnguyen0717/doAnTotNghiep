@@ -1,9 +1,15 @@
 import 'package:endgame/pages/homepage.dart';
 import 'package:endgame/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-void main() {
-  runApp(const MyApp());
+void main() async {
+  await Hive.initFlutter();
+  await Hive.openBox('money');
+  runApp(
+      const MyApp(
+      ));
 }
 
 class MyApp extends StatelessWidget {
