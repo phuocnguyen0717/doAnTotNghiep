@@ -31,7 +31,7 @@ dependencies:
     sdk: flutter
   hive: ^2.0.4
   hive_flutter: ^1.1.0
-
+  shared_preferences: ^2.0.8
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -64,6 +64,7 @@ flutter:
     - assets/expense.png
     - assets/icon.png
     - assets/face.png
+    - assets/money_1.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
