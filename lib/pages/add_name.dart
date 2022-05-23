@@ -74,6 +74,7 @@ class _AddNameState extends State<AddName> {
                 style: TextStyle(
                   fontSize: 20.0,
                 ),
+                maxLength: 15,
                 onChanged: (val) {
                   name = val;
                 },
@@ -82,38 +83,67 @@ class _AddNameState extends State<AddName> {
             SizedBox(
               height: 12.0,
             ),
+            //Z1
             SizedBox(
               height: 50.0,
-              width: double.maxFinite,
               child: ElevatedButton(
-                onPressed: () {
-                  if (name.isNotEmpty) {
-                    dbHelper.addName(name);
-                    Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (context) => Homepage()
+                onPressed: () async {
+                  if (name.isEmpty) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        action: SnackBarAction(
+                          label: "OK",
+                          onPressed: () {
+                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                          },
                         ),
+                        backgroundColor: Colors.white,
+                        content: Text(
+                          "Please Enter a name",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18.0,
+                          ),
+                        ),
+                      ),
                     );
-                  } else {}
+                  } else {
+                    DbHelper dbHelper = DbHelper();
+                    await dbHelper.addName(name);
+                    Navigator.of(context).pushReplacement(
+                      MaterialPageRoute(
+                        builder: (context) => Homepage(),
+                      ),
+                    );
+                  }
                 },
+                style: ButtonStyle(
+                  shape: MaterialStateProperty.all(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                        12.0,
+                      ),
+                    ),
+                  ),
+                ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      "Next",
+                      "Let's Start",
                       style: TextStyle(
                         fontSize: 20.0,
                       ),
                     ),
                     SizedBox(
-                      height: 12.0,
+                      width: 8.0,
                     ),
                     Icon(
-                      Icons.navigate_next_rounded,
+                      Icons.arrow_right_alt,
+                      size: 24.0,
                     ),
                   ],
                 ),
-
               ),
             ),
           ],

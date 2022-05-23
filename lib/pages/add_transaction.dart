@@ -100,7 +100,34 @@ class _AddTransactionState extends State<AddTransaction> {
                     onChanged: (val) {
                       try {
                         amount = int.parse(val);
-                      } catch (e) {}
+                      } catch (e) {
+                        // show Error
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            backgroundColor: Colors.red,
+                            duration: Duration(
+                              seconds: 2,
+                            ),
+                            content: Row(
+                              children: [
+                                Icon(
+                                  Icons.info_outline,
+                                  color: Colors.white,
+                                ),
+                                SizedBox(
+                                  width: 6.0,
+                                ),
+                                Text(
+                                  "Enter only Numbers as Amount",
+                                  style: TextStyle(
+                                    fontSize: 16.0,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      }
                     },
                     inputFormatters: [
                       FilteringTextInputFormatter.digitsOnly,
@@ -138,7 +165,7 @@ class _AddTransactionState extends State<AddTransaction> {
                       border: InputBorder.none,
                     ),
                     style: TextStyle(
-                      fontSize: 24.0,
+                      fontSize: 20.0,
                     ),
                     onChanged: (val) {
                       note = val;
@@ -268,13 +295,25 @@ class _AddTransactionState extends State<AddTransaction> {
               height: 50.0,
               child: ElevatedButton(
                 onPressed: () async {
-                  if (amount != null && note.isNotEmpty) {
+                  if (amount != null ) {
 
                     DbHelper dbHelper = DbHelper();
                     await dbHelper.addData(amount!, selectedDate, note, type);
                     Navigator.of(context).pop();
-                  } else {
-                    print("Not All Values Provided !");
+                  } //Z2
+                  else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        backgroundColor: Colors.red[700],
+                        content: Text(
+                          "Please enter a valid Amount !",
+                          style: TextStyle(
+                            fontSize: 16.0,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    );
                   }
                 },
                 child: Text(

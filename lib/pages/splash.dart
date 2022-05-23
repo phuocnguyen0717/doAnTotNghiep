@@ -14,6 +14,11 @@ class _SplashState extends State<Splash> {
 
   DbHelper dbHelper = DbHelper();
 
+  @override
+  void initState() {
+    super.initState();
+    getSettings();
+  }
   Future getSettings() async{
     String? name = await dbHelper.getName();
     if(name != null){
@@ -31,11 +36,7 @@ class _SplashState extends State<Splash> {
     }
   }
 
-  @override
-  void initState() {
-    super.initState();
-    getSettings();
-  }
+
 
   @override
   Widget build(BuildContext context) {
