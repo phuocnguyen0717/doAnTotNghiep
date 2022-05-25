@@ -18,6 +18,30 @@ class Homepage extends StatefulWidget {
 }
 
 class _HomepageState extends State<Homepage> {
+  int _selectedIndex = 0;
+  static const TextStyle optionStyle =
+      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  static const List<Widget> _widgetOptions = <Widget>[
+    Text(
+      'Index 0: Home',
+      style: optionStyle,
+    ),
+    Text(
+      'Index 1: Business',
+      style: optionStyle,
+    ),
+    Text(
+      'Index 2: School',
+      style: optionStyle,
+    ),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   List<String> months = [
     "Jan",
     "Feb",
@@ -83,9 +107,9 @@ class _HomepageState extends State<Homepage> {
       box.toMap().values.forEach((element) {
         items.add(
           TransactionModel(
-            element['amount'] as int,
-            element['date'] as DateTime,
-            element['note'],
+            element['amount'] ,
+            element['date'] ,
+            element['dropdownValue'],
             element['type'],
           ),
         );
@@ -377,8 +401,7 @@ class _HomepageState extends State<Homepage> {
                                   offset: Offset(0, 4),
                                 )
                               ]),
-                          child: LineChart(
-                              LineChartData(
+                          child: LineChart(LineChartData(
                             borderData: FlBorderData(
                               show: false,
                             ),
@@ -390,9 +413,9 @@ class _HomepageState extends State<Homepage> {
                                 colors: [
                                   Static.PrimaryColor,
                                 ],
-                                showingIndicators:[200,200,90,10],
-                                dotData:FlDotData(
-                                  show:true,
+                                showingIndicators: [200, 200, 90, 10],
+                                dotData: FlDotData(
+                                  show: true,
                                 ),
                               ),
                             ],
@@ -409,7 +432,6 @@ class _HomepageState extends State<Homepage> {
                       ),
                     ),
                   ),
-
                   ListView.builder(
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
@@ -429,14 +451,14 @@ class _HomepageState extends State<Homepage> {
                         if (dataAtIndex.type == "Income") {
                           return incomeTile(
                             dataAtIndex.amount,
-                            dataAtIndex.note,
+                            dataAtIndex.dropdownValue,
                             dataAtIndex.date,
                             index,
                           );
                         } else {
                           return expenseTile(
                             dataAtIndex.amount,
-                            dataAtIndex.note,
+                            dataAtIndex.dropdownValue,
                             dataAtIndex.date,
                             index,
                           );
@@ -548,7 +570,7 @@ class _HomepageState extends State<Homepage> {
     );
   }
 
-  Widget expenseTile(int value, String note, DateTime date, int index) {
+  Widget expenseTile(int value, String dropdownValue, DateTime date, int index) {
     return InkWell(
       splashColor: Static.PrimaryMaterialColor[400],
       onTap: () {
@@ -630,7 +652,7 @@ class _HomepageState extends State<Homepage> {
                     Padding(
                       padding: const EdgeInsets.all(6.0),
                       child: Text(
-                        note,
+                        dropdownValue,
                         style: TextStyle(
                           color: Colors.grey[800],
                         ),
@@ -646,7 +668,7 @@ class _HomepageState extends State<Homepage> {
     );
   }
 
-  Widget incomeTile(int value, String note, DateTime date, int index) {
+  Widget incomeTile(int value, String dropdownValue, DateTime date, int index) {
     return InkWell(
       splashColor: Static.PrimaryMaterialColor[400],
       onTap: () {
@@ -727,7 +749,7 @@ class _HomepageState extends State<Homepage> {
                 Padding(
                   padding: const EdgeInsets.all(6.0),
                   child: Text(
-                    note,
+                    dropdownValue,
                     style: TextStyle(
                       color: Colors.grey[800],
                     ),
@@ -832,6 +854,28 @@ class _HomepageState extends State<Homepage> {
           ),
         ],
       ),
+    );
+  }
+
+  Widget selectOptions() {
+    return BottomNavigationBar(
+      items: const <BottomNavigationBarItem>[
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: 'Home',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.bar_chart),
+          label: 'Report',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.details),
+          label: 'Details',
+        ),
+      ],
+      currentIndex: _selectedIndex,
+      selectedItemColor: Colors.amber[800],
+      onTap: _onItemTapped,
     );
   }
 }

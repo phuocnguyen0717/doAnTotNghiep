@@ -1,6 +1,5 @@
 import 'package:endgame/controllers/db_helper.dart';
 import 'package:endgame/pages/homepage.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AddName extends StatefulWidget {

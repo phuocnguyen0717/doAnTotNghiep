@@ -15,7 +15,7 @@ class _AddTransactionState extends State<AddTransaction> {
   String note = "Some Expense";
   String type = "Imcome";
   DateTime selectedDate = DateTime.now();
-
+  String dropdownValue = 'Supermarket';
   List<String> months = [
     "Jan",
     "Feb",
@@ -159,18 +159,28 @@ class _AddTransactionState extends State<AddTransaction> {
                   width: 12.0,
                 ),
                 Expanded(
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: "Note Transaction",
-                      border: InputBorder.none,
+                  child: DropdownButton<String>(
+                    value: dropdownValue,
+                    elevation: 16,
+                    style: const TextStyle(color: Color(0xff004eeb)),
+                    underline: Container(
+                      height: 2,
+                      color: Color(0xff004eeb),
                     ),
-                    style: TextStyle(
-                      fontSize: 20.0,
-                    ),
-                    onChanged: (val) {
-                      note = val;
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        dropdownValue = newValue!;
+                      });
                     },
-                  ),
+                    items: <String>['Fuel', 'Supermarket','Sports', 'Travels', 'Fun','Pets','Cosmetic',
+                      'Food','Drink','Salary','Other','Investment','Transaction','Rental']
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                  )
                 ),
               ],
             ),
@@ -208,8 +218,8 @@ class _AddTransactionState extends State<AddTransaction> {
                     if (val) {
                       setState(() {
                         type = "Income";
-                        if (note.isEmpty || note == "Expense") {
-                          note = 'Income';
+                        if (dropdownValue.isEmpty || dropdownValue == "Expense") {
+                          dropdownValue = 'Income';
                         }
                       });
                     }
@@ -233,8 +243,8 @@ class _AddTransactionState extends State<AddTransaction> {
                       setState(() {
                         type = "Expense";
 
-                        if (note.isEmpty || note == "Income") {
-                          note = 'Expense';
+                        if (dropdownValue.isEmpty || dropdownValue == "Income") {
+                          dropdownValue = 'Expense';
                         }
                       });
                     }
@@ -298,7 +308,7 @@ class _AddTransactionState extends State<AddTransaction> {
                   if (amount != null ) {
 
                     DbHelper dbHelper = DbHelper();
-                    await dbHelper.addData(amount!, selectedDate, note, type);
+                    await dbHelper.addData(amount!, selectedDate, dropdownValue, type);
                     Navigator.of(context).pop();
                   } //Z2
                   else {

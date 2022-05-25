@@ -1,5 +1,7 @@
 
 
+import 'package:endgame/pages/local/getLocal.dart';
+import 'package:endgame/pages/local/setLocal.dart';
 import 'package:flutter/material.dart';
 import 'package:endgame/pages/widgets/confirm_dialog.dart';
 import 'package:endgame/controllers/db_helper.dart';
@@ -157,6 +159,43 @@ class _SettingsState extends State<Settings> {
           //
           SizedBox(
             height: 20.0,
+          ),
+          ListTile(
+            onTap: () async {
+              if(await GetLocal.getPassWord() == ''){
+                //chưa set pass => thiết lập mật khẩu
+                //dialog
+                print('chưa có');
+              }else{
+                //đã set rồi => thiết lập mkm mới
+                print('có rồi');
+              }
+            },
+            tileColor: Colors.white,
+            contentPadding: EdgeInsets.symmetric(
+              vertical: 12.0,
+              horizontal: 20.0,
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(
+                8.0,
+              ),
+            ),
+            title: Text(
+              "Setup ",
+              style: TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+            subtitle: Text(
+              "PASSWORD",
+            ),
+            trailing: Icon(
+              Icons.password,
+              size: 32.0,
+              color: Colors.black87,
+            ),
           ),
           //
           // FutureBuilder<bool>(

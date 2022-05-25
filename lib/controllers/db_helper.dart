@@ -23,8 +23,8 @@ class DbHelper {
   }
 
 
-  Future addData(int amount, DateTime date, String note, String type) async {
-    var value = {'amount': amount, 'date': date, 'type': type, 'note': note};
+  Future addData(int amount, DateTime date, String dropdownValue, String type) async {
+    var value = {'amount': amount, 'date': date, 'type': type, 'dropdownValue': dropdownValue};
     box.add(value);
   }
 
@@ -36,5 +36,14 @@ class DbHelper {
   getName() async{
     preferences = await SharedPreferences.getInstance();
     return preferences.getString('name');
+  }
+  setLocalAuth(bool val) async {
+    preferences = await SharedPreferences.getInstance();
+    return preferences.setBool('auth', val);
+  }
+
+  Future<bool> getLocalAuth() async {
+    preferences = await SharedPreferences.getInstance();
+    return preferences.getBool('auth') ?? false;
   }
 }

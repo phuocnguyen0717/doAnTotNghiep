@@ -1,9 +1,8 @@
-import 'package:endgame/pages/add_name.dart';
-import 'package:endgame/pages/homepage.dart';
+import 'package:endgame/pages/details/expensed.dart';
+import 'package:endgame/pages/security.dart';
 import 'package:endgame/pages/splash.dart';
 import 'package:endgame/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async {
@@ -24,7 +23,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Money Manager',
       theme: myTheme,
-      home: const Splash(),
+      home:  ExpansedChart(),
     );
   }
 }

@@ -1,6 +1,6 @@
 class TransactionModel {
   int amount;
-  final String note;
+  final String dropdownValue;
   final DateTime date;
   final String type;
 
@@ -8,5 +8,5 @@ class TransactionModel {
     this.amount = this.amount + amount;
   }
 
-  TransactionModel(this.amount, this.note, this.date, this.type);
+  TransactionModel(this.amount, this.dropdownValue, this.date, this.type);
 }
